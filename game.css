@@ -1,0 +1,44 @@
+* {
+    font-family: "Open Sans", sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.board {
+   display: flex;
+   background-color: rgb(219, 219, 219);
+   width: 605px;
+   height: 605px;
+}
+
+.line {
+    height: 200px;
+    width: 100%;
+}
+
+.square {
+    border: 1px solid rgb(136, 136, 136);
+    height: 200px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker {
+    text-align: center;
+    font-size: 50px;
+    margin: 0;
+}
+
+#marker-x {
+    color: rgb(13, 183, 189) ;
+}
+
+#marker-circle {
+    color: rgb(201, 57, 100);
+}

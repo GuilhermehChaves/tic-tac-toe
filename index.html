@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+    <header>
+        <link rel="stylesheet" href="./game.css">
+    </header>
+
+    <body>
+
+        <div class="board">
+            <div class="line">
+                <div id="square-0-0" class="square"></div>
+                <div id="square-0-1" class="square"></div>
+                <div id="square-0-2" class="square"></div>
+            </div>
+    
+            <div class="line">
+                <div id="square-1-0" class="square"></div>
+                <div id="square-1-1" class="square"></div>
+                <div id="square-1-2" class="square"></div>
+            </div>
+    
+            <div class="line">
+                <div id="square-2-0" class="square"></div>
+                <div id="square-2-1" class="square"></div>
+                <div id="square-2-2" class="square"></div>
+            </div>
+        </div>
+
+        <script src="./TicTacToe.js"></script>
+        <script>
+            const game = new TicTacToe();
+
+            document.querySelectorAll(".square").forEach(element => {
+                element.addEventListener('click', function() {
+                    game.move(this);
+                });
+            });
+
+            game.setup();
+        </script>
+    </body>
+</html>
