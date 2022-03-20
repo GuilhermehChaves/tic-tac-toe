@@ -1,10 +1,22 @@
 class TicTacToe {
     constructor() {
-        console.log("constructing");
         this.board = [
             [ [], [], [] ],
             [ [], [], [] ],
             [ [], [], [] ],
+        ];
+        this.winsPossible = [
+            //row
+            parseInt('000000111', 2),
+            parseInt('000111000', 2),
+            parseInt('111000000', 2),
+            //column
+            parseInt('100100100', 2),
+            parseInt('010010010', 2),
+            parseInt('001001001', 2),
+            //diagonal
+            parseInt('100010001', 2),
+            parseInt('001010100', 2)
         ];
         this.isInProgress = false;
         this.round = 0;
@@ -15,22 +27,24 @@ class TicTacToe {
                 content: '',
                 name: ''
             },
+            color: null,
         };
+        this.statusElement = document.querySelector('.status');
         this.fillBoard();
-        console.log(this.board)
     }
 
     setup() {
         this.isInProgress = true;
         this.currentPlayer.id = 1;
+        this.currentPlayer.color = '#0db7bd';
         this.currentPlayer.marker.content = 'X';
         this.currentPlayer.marker.name = "marker-x"
-        console.log(`Player ${this.currentPlayer.id} is your time`);
+        this.changeStatus(`Jogador ${this.currentPlayer.id}`);
     }
 
     fillBoard() {
-        for(let line = 0; line < 3; line++) {
-            for(let column = 0; column < 3; column++) {
+        for (let line = 0; line < 3; line++) {
+            for (let column = 0; column < 3; column++) {
                 const square = document.querySelector(`#square-${column}-${line}`);
                 this.board[line][column] = square;
                 square.line = line;
@@ -43,53 +57,57 @@ class TicTacToe {
         if (this.currentPlayer.id === 1) {
             this.currentPlayer.marker.content = 'O';
             this.currentPlayer.marker.name = 'marker-circle'
-            this.currentPlayer.id++;
+            this.currentPlayer.id++;        
+            this.currentPlayer.color = '#c93964';
             return;
         }
 
         this.currentPlayer.marker.content = 'X';
+        this.currentPlayer.color = '#0db7bd';
         this.currentPlayer.marker.name = 'marker-x'
         this.currentPlayer.id--;
     }
 
-    isFinished() {
-        //Diagonals
-        let primaryDiagonal = 0;
-        let secodaryDiagonal = 0;
+    isFinished(playerPossible) {
+        const binaryPossible = parseInt(playerPossible, 2)
+        return this.isWinner(binaryPossible);
+    }
 
-        for (let i = 0; i < 3; i++) {
-            primaryDiagonal += this.board[i][i].player;
-            secodaryDiagonal += this.board[2 - i][i].player;
+    isWinner(possible) {
+        for (let i = 0; i < 8; i++) {
+            if (possible == this.winsPossible[i]) {
+                return true;
+            }
         }
 
-        if (primaryDiagonal == 3) {
-            alert("Player 1 won the game!");
-            this.isInProgress = false;
-            return;
-        }
+        return false;
+    }
 
-        if (primaryDiagonal == 6) {
-            alert("Player 2 won the game!");
-            this.isInProgress = false;
-            return;
-        }
+    changeStatus(text) {
+        this.statusElement.style.color = this.currentPlayer.color;
+        this.statusElement.innerHTML = text;
+    }
 
-        if (secodaryDiagonal == 3) {
-            alert("Player 1 won the game!");
-            this.isInProgress = false;
-            return;
-        }
+    getPlayerPossible() {
+        let possible = '';
 
-        if (secodaryDiagonal == 6) {
-            alert("Player 2 won the game!");
-            this.isInProgress = false;
-            return;
-        }
+        this.board.forEach(element => {
+            element.forEach(component => {
+                if (component.childNodes.length > 0 && component.childNodes[0].innerHTML.trim() == this.currentPlayer.marker.content.trim()) {
+                   possible = possible.concat('1');
+                } else {
+                  possible = possible.concat('0');
+                }
+            });
+        });
 
-        //Lines
-        let firstLine = 0;
-        let secondLine = 0;
-        let thirtyLine = 0;
+       return possible;
+    }
+
+    updateBoard(element) {
+        element.innerHTML = `<span id="${this.currentPlayer.marker.name}" class="marker"> ${this.currentPlayer.marker.content} </span>`;
+        element.isMarked = true;
+        element.player = this.currentPlayer.id;
     }
 
     move(element) {
@@ -103,12 +121,18 @@ class TicTacToe {
             return;
         }
 
-        element.innerHTML = `<span id="${this.currentPlayer.marker.name}" class="marker"> ${this.currentPlayer.marker.content} </span>`;
-        element.isMarked = true;
-        element.player = this.currentPlayer.id;
+        this.updateBoard(element);
+
+        const playerPossible = this.getPlayerPossible();
+        const isFinished = this.isFinished(playerPossible);
         
+        if (isFinished) {
+            this.changeStatus(`Jogador ${this.currentPlayer.id} ganhou o jogo`);
+            this.isInProgress = false;
+            return;
+        }
+
         this.choosePlayer();
-        console.log(`Player ${this.currentPlayer.id} is your time`);
-        this.isFinished();
+        this.changeStatus(`Jogador ${this.currentPlayer.id}`);
     }
 }
