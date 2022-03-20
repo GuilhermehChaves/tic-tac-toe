@@ -8,11 +8,12 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2% 10%;
+    background-color: #080f24; /* Light theme white */
 }
 
 .board {
    display: flex;
-   background-color: #dbdbdb;
+   background-color: #2e3f55; /* Light theme #dbdbdb */
    width: 605px;
    height: 605px;
 }
@@ -23,7 +24,7 @@ body {
 }
 
 .square {
-    border: 1px solid rgb(136, 136, 136);
+    border: 1px solid #6896b1;  /* Light theme #878787*/
     height: 200px;
     width: 200px;
     display: flex;

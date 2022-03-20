@@ -21,11 +21,11 @@ class TicTacToe {
         this.isInProgress = false;
         this.round = 0;
         this.currentPlayer = {
-            id: undefined,
+            id: null,
             moves: false,
             marker: {
-                content: '',
-                name: ''
+                content: null,
+                name: null
             },
             color: null,
         };
@@ -35,10 +35,7 @@ class TicTacToe {
 
     setup() {
         this.isInProgress = true;
-        this.currentPlayer.id = 1;
-        this.currentPlayer.color = '#0db7bd';
-        this.currentPlayer.marker.content = 'X';
-        this.currentPlayer.marker.name = "marker-x"
+        this.setPLayerOneConfigs();
         this.changeStatus(`Jogador ${this.currentPlayer.id}`);
     }
 
@@ -53,19 +50,27 @@ class TicTacToe {
         }
     }
 
-    choosePlayer() {
-        if (this.currentPlayer.id === 1) {
-            this.currentPlayer.marker.content = 'O';
-            this.currentPlayer.marker.name = 'marker-circle'
-            this.currentPlayer.id++;        
-            this.currentPlayer.color = '#c93964';
-            return;
-        }
-
+    setPLayerOneConfigs() {
         this.currentPlayer.marker.content = 'X';
         this.currentPlayer.color = '#0db7bd';
         this.currentPlayer.marker.name = 'marker-x'
-        this.currentPlayer.id--;
+        this.currentPlayer.id = 1;
+    }
+
+    setPlayerTwoConfigs() {
+        this.currentPlayer.marker.content = 'O';
+        this.currentPlayer.color = '#c93964';
+        this.currentPlayer.marker.name = 'marker-circle'
+        this.currentPlayer.id = 2;
+    }
+
+    choosePlayer() {
+        if (this.currentPlayer.id === 1) {
+            this.setPlayerTwoConfigs();
+            return;
+        }
+
+        this.setPLayerOneConfigs();
     }
 
     isFinished(playerPossible) {
@@ -74,13 +79,8 @@ class TicTacToe {
     }
 
     isWinner(possible) {
-        for (let i = 0; i < 8; i++) {
-            if (possible == this.winsPossible[i]) {
-                return true;
-            }
-        }
-
-        return false;
+        const index = this.winsPossible.indexOf(possible);
+        return index > -1;
     }
 
     changeStatus(text) {
@@ -112,12 +112,12 @@ class TicTacToe {
 
     move(element) {
         if (!this.isInProgress) {
-            console.log("O jogo terminou, por favor reset para jogar de novo");
+            this.changeStatus('O jogo terminou, por favor reset para jogar de novo');
             return;
         }
 
         if (element.isMarked) {
-            console.log("Campo invalido tente um vazio");
+            this.changeStatus('Campo invalido tente um vazio');
             return;
         }
 
