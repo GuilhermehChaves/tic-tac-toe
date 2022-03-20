@@ -4,7 +4,9 @@
   "description": "",
   "main": "TicTacToe.js",
   "scripts": {
-    "lint": "eslint ./js --fix"
+    "lint": "eslint ./js --fix",
+    "sass:build": "sass style/scss:style/css",
+    "sass:watch": "sass --watch style/scss:style/css"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.6.0"
+    "prettier": "^2.6.0",
+    "sass": "^1.49.9"
   }
 }
